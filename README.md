@@ -1,87 +1,100 @@
-# MargaDarshi — The Companion That Shows The Way
-> **Front-End Developer Assignment Submission**  
-> 🌐 **Live Demo:** [https://vivek1334.github.io/Margadarshi/](https://vivek1334.github.io/Margadarshi/)  
-> An intelligent global travel exploration platform featuring real-time meteorological telemetry, location-aware distance calculations, dynamic landmark photography, and interactive day-by-day expedition planning powered by Google Gemini AI.
+# 🧭 MargaDarshi — The Companion That Shows The Way
+
+> 🌐 **Live Website:** [https://vivek1334.github.io/Margadarshi/](https://vivek1334.github.io/Margadarshi/)  
+> *An intelligent, interactive travel companion that turns dreaming into day-by-day expedition planning.*
 
 ---
 
-## 🌟 Quick Start & Preview
+## 📖 What is MargaDarshi?
 
-### Method 1: Instant Local Server (Zero Dependencies Required)
-Run the included PowerShell server script from the project directory:
-```powershell
-powershell -ExecutionPolicy Bypass -File .\serve.ps1
-```
-Then open your browser at **`http://localhost:8080/`**.
+**MargaDarshi** (Sanskrit for *"The Guide that Shows the Path"*) is a modern, responsive travel exploration platform designed to help travelers discover, explore, and plan journeys anywhere in the world.
 
-### Method 2: Standard Node.js Static Server
-```bash
-npx serve .
-```
+Unlike traditional travel sites that only show generic lists of cities, MargaDarshi combines **live meteorological weather telemetry**, **authentic landmark verification with real photography**, **location-aware distance calculations**, and **day-by-day itinerary planning powered by Google Gemini AI** into one seamless, fast, and visually stunning web experience.
 
-### Method 3: Direct File Inspection or VS Code Live Server
-Right-click `index.html` and select **"Open with Live Server"**.
+The application is built to run entirely in the browser with **zero backend dependencies**, working smoothly across **smartphones**, **iPads/tablets**, and **laptops/desktops**.
 
 ---
 
-## 📋 Assignment Requirements Mapping
+## ✨ Key Features
 
-| # | Assignment Requirement | Implementation in MargaDarshi | Key Source Files |
-|---|---|---|---|
-| **01** | **Landing Experience (Hero Background Video)** | Full-viewport cinematic hero with looping Mixkit/Pexels aerial footage, dark gradient overlay for text readability, video switcher, and play/pause & mute controls. | [`js/components/hero-video.js`](./js/components/hero-video.js) |
-| **02** | **Destination Explorer** | Multi-faceted search (city, country, landmark) and filtering (Continents, Travel Vibes, Budget Tiers, Distance sorting). Individual deep-dive page for each destination. | [`js/components/explorer.js`](./js/components/explorer.js), [`js/components/destination-view.js`](./js/components/destination-view.js) |
-| **03** | **Famous Places** | **Not a bare list of names!** Presented as rich media cards with high-res photos, star ratings, review counts, narrative descriptions, "Why Visit" quotes, "Insider Pro-Tips", estimated visit duration, and ticket costs. | [`js/components/destination-view.js`](./js/components/destination-view.js), [`js/destinations-data.js`](./js/destinations-data.js) |
-| **04** | **Location Awareness** | Asks visitor for browser Geolocation permission with friendly banner. Also allows manual city search for users who prefer not to share GPS. Automatically calculates Haversine distance to every global destination and shows origin in navbar. | [`js/services/geo-service.js`](./js/services/geo-service.js) |
-| **05** | **Real-Time Weather** | Dual-provider live weather integration. Supports **OpenWeather API** (custom key input) and seamlessly defaults to **Open-Meteo API** (zero key needed, 100% free live telemetry). Displays current temp, feels-like, wind, humidity, pressure, and 5-day daily forecasts with °C / °F toggle. | [`js/services/weather-service.js`](./js/services/weather-service.js) |
-| **06** | **Dynamic Images** | Images are dynamically fetched via **Unsplash API**, **Pexels API**, and the **Wikipedia PageImages API** (for authentic landmark photographs without rate-limit constraints). | [`js/services/image-service.js`](./js/services/image-service.js) |
-| **07** | **AI Chatbot Concierge** | Conversational **WanderAI** assistant powered by **Google Gemini API** (`gemini-2.5-flash`). Features quick suggestion chips ("How long to spend?", "Best time to visit?", "Local cuisine must-haves?"), streaming indicators, and a built-in expert travel fallback engine if no key is entered. | [`js/services/gemini-service.js`](./js/services/gemini-service.js), [`js/components/chat-widget.js`](./js/components/chat-widget.js) |
-| **08** | **Itinerary Planning** | Clear way to generate custom trips. Generates and renders a **structured, day-by-day interactive plan** (NOT a block of chat text!) with Morning/Afternoon/Evening time slots, activity tags, costs, interactive completion checkboxes, culinary spotlights, insider tips, and export options (Print/PDF, Markdown copy, JSON download). | [`js/services/itinerary-service.js`](./js/services/itinerary-service.js), [`js/components/itinerary-view.js`](./js/components/itinerary-view.js) |
-
----
-
-## 🏗️ Architecture & Technology Stack
-
-- **Core**: Vanilla Modern JavaScript (ES6+ Modules), HTML5 Semantic Shell.
-- **Styling**: Tailwind CSS (CDN) + Custom Glassmorphism CSS (`css/styles.css`).
-- **Icons**: Lucide Icons.
-- **Maps**: Leaflet.js with CartoDB Dark Matter tiles.
-- **Typography**: Google Fonts (*Outfit* for bold display titles, *Plus Jakarta Sans* for ultra-clean body legibility).
-- **APIs**:
-  - **AI**: Google Gemini REST API (`gemini-2.5-flash`).
-  - **Weather**: Dual-tier OpenWeather API + Open-Meteo meteorological telemetry.
-  - **Images**: Unsplash API, Pexels API, Wikimedia Commons / Wikipedia PageImages API.
-  - **Geolocation**: HTML5 Geolocation API + OpenStreetMap Nominatim Reverse Geocoding.
+* 🗺️ **Global Destination Explorer**: Search by city, state, country, or specific landmark (e.g. *Gujarat*, *Jaipur*, *Tokyo*, *Eiffel Tower*). Filter by Continents, Travel Vibes (*Adventure, Culture, Beach, Historic*), and Budget Tiers.
+* 🏛️ **Authentic Landmark Verification**: Every landmark card displays verified photographs, honest descriptions, ticket costs, opening hours, insider pro-tips, and direct links to **Google Arts & Culture 360° virtual tours**.
+* 🌦️ **Real-Time Weather Radar**: Live meteorological weather (current temperature, feels-like, wind speed, humidity, and 5-day forecasts) via **Open-Meteo** telemetry so you always know what to pack.
+* 🤖 **AI Day-by-Day Itinerary Planner**: Generate custom, structured itineraries with Morning, Afternoon, and Evening slots, activity costs, insider tips, culinary recommendations, and interactive check-off items.
+* 💬 **WanderAI Travel Concierge**: A 24/7 floating AI chatbot powered by **Google Gemini** to answer questions about local etiquette, best visiting months, packing essentials, and hidden gems.
+* 🔊 **Interactive Audio Phrasebook**: Built-in speech synthesis that pronounces essential greetings and phrases aloud in the destination's native language.
+* 🧭 **3D Mystery Destination Compass**: Feeling spontaneous? Spin the 3D compass with interactive sound effects to let fate pick your next adventure.
+* 💌 **Interactive 3D Postcards**: Flip, customize, and write digital vintage travel postcards to download or share.
+* 💖 **Bucket List & Saved Places**: Save your favorite spots and view them anytime in your persistent offline favorites drawer.
 
 ---
 
-## ⚙️ API Configuration
+## 🚀 How to Use MargaDarshi
 
-Click the **Settings Icon (Sliders)** in the top-right navigation bar to configure:
-1. **Google Gemini API Key**: [Get a free key from Google AI Studio](https://aistudio.google.com/app/apikey).
-2. **OpenWeather API Key** *(Optional)*: [Get key from OpenWeather](https://openweathermap.org/api).
-3. **Unsplash Access Key** *(Optional)*: Client ID for Unsplash API.
-4. **Origin City**: Set manually or auto-detect with GPS.
+### 1. Explore Destinations
+* **Browse the Feed**: Scroll through curated global and regional destinations on the home page.
+* **Search Anything**: Use the search bar at the top to type any destination, state, or landmark name (e.g., `"Goa"`, `"Gujarat"`, `"Kyoto"`, `"Rome"`).
+* **Filter by Preference**: Use the category pills (*Culture, Nature, Beach, Luxury, Budget*) or the continent selector to narrow down your dream destination.
 
-> [!NOTE]
-> **Zero-Setup Evaluation**: The application is purposefully engineered to function 100% out of the box even **without entering any API keys**. Live weather runs via Open-Meteo, landmark images stream via Wikipedia PageImages, and WanderAI features a built-in expert travel engine with realistic responses and day-by-day itineraries. Entering your own keys activates direct live Google Gemini 2.5 Flash and OpenWeather.
+### 2. Deep Dive into a Location
+* Click **"Explore Guide"** on any destination card to open its dedicated view.
+* **Check the Weather**: See real-time temperature, wind, and the 5-day weather outlook before you go.
+* **Inspect Real Landmarks**: Browse verified landmarks with ticket prices, ideal visiting durations, and insider advice.
+* **Explore in 360°**: Click the **"Google Arts & Culture"** button on any landmark card to take an immersive virtual tour.
+
+### 3. Generate a Custom Day-by-Day Itinerary
+1. On any destination page, click **"Plan Day-by-Day Trip"** (or use the Planner tab).
+2. Choose your trip length (1 to 7 days) and travel vibe.
+3. Click **"Generate Itinerary"** — Google Gemini AI will construct a structured day-by-day schedule with morning, afternoon, and evening activities.
+4. **Interact with Your Plan**: Check off activities as you complete them, copy the plan to your clipboard, or click **Print / Save as PDF**.
+
+### 4. Practice Local Language
+* Scroll down to the **Local Phrasebook** section inside any destination guide.
+* Click the **speaker icon 🔊** next to any greeting or phrase (*"Hello"*, *"Thank You"*, *"How much is this?"*) to hear the authentic pronunciation.
+
+### 5. Spin the Mystery Compass
+* Click **"Surprise Me"** in the top navigation (or tap the center compass icon in the mobile bottom dock).
+* Watch the 3D compass spin and land on an unexpected global destination with sound effects!
+
+### 6. Chat with WanderAI
+* Tap the floating **chat bubble icon** at the bottom-right corner of the screen.
+* Ask anything: *"What street food should I try in Mumbai?"*, *"Is 3 days enough for Paris?"*, or *"What is the tipping etiquette in Japan?"*.
 
 ---
 
-## 🚀 Deployment
+## 📱 Multi-Device Experience
 
-### Deploy to Vercel
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run in project directory:
-   ```bash
-   vercel
-   ```
-3. `vercel.json` is already included with clean URLs and SPA rewrites.
+* **📱 Smartphones (iPhone & Android)**: Thumb-friendly 5-target bottom dock navigation, safe-area inset padding, mobile currency selector, and slide-down drawer.
+* **📱 iPads & Tablets**: Responsive 2-column card layouts, touch momentum scrolling, and balanced drawers.
+* **💻 Laptops & Desktops**: Full widescreen 3-column feed, interactive hover elevations, and widescreen split views.
 
-### Deploy to Netlify
-1. Drag and drop the `voyage-travel-app` folder directly into [Netlify Drop](https://app.netlify.com/drop).
-2. Or link via Git: `netlify.toml` is pre-configured with publish directory `.` and redirect rules.
+---
 
-### Deploy to GitHub Pages
-1. Push repository to GitHub.
-2. In **Repository Settings > Pages**, select `Deploy from a branch` -> `main` -> `/ (root)`.
-3. Save and your live URL will be ready in under 60 seconds!
+## 🛠️ Technology Stack
+
+* **Core**: Vanilla JavaScript (Modern ES6+ Modules) — *Zero build step or bundler needed*
+* **Styling**: Tailwind CSS (CDN) + Glassmorphism UI
+* **Maps**: Leaflet.js with CartoDB Dark Matter / OpenStreetMap tiles
+* **Live Weather**: Open-Meteo API (100% free, CORS-enabled meteorological telemetry)
+* **AI Intelligence**: Google Gemini REST API (`gemini-2.5-flash`)
+* **Landmarks & Imagery**: Wikipedia / Wikimedia Commons REST APIs + Unsplash
+* **Audio**: HTML5 Web SpeechSynthesis API & Web Audio API synthesizers
+* **Storage**: Browser `localStorage` for offline persistence
+
+---
+
+## ⚙️ Optional Configuration
+
+MargaDarshi works **100% out of the box with zero setup** (live weather, landmark imagery, speech synthesis, and built-in travel recommendations all work without entering any keys).
+
+If you wish to connect your own personal API keys:
+1. Click the **Settings (Sliders)** icon in the top navigation bar.
+2. Enter your **Google Gemini API Key** ([Get free key from Google AI Studio](https://aistudio.google.com/app/apikey)).
+3. Enter your optional **OpenWeather** or **Unsplash** keys.
+4. Settings are saved locally in your own browser's `localStorage`.
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
