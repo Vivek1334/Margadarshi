@@ -1,0 +1,22 @@
+{
+  "name": "margadarshi-travel-app",
+  "version": "1.0.0",
+  "description": "MargaDarshi — The Companion That Shows The Way",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "travel-app",
+    "frontend-assignment",
+    "google-gemini",
+    "openweather",
+    "unsplash",
+    "leaflet",
+    "tailwind"
+  ],
+  "author": "MargaDarshi Team",
+  "license": "MIT"
+}

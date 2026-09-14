@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>MargaDarshi — The Companion That Shows The Way</title>
+  <meta name="description" content="Explore world destinations, track live real-time weather, discover notable places, and craft custom day-by-day itineraries with Google Gemini AI." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44' fill='none'%3E%3Crect width='44' height='44' rx='12' fill='%230f172a'/%3E%3Ccircle cx='30' cy='14' r='10' fill='%2334d399' fill-opacity='0.4'/%3E%3Cpath d='M8 34 C14 31, 16 24, 22 21 C26 19, 28 16, 30 14' stroke='%2334d399' stroke-width='3.5' stroke-linecap='round' fill='none'/%3E%3Cpolygon points='30,5 32,12 39,14 32,16 30,23 28,16 21,14 28,12' fill='%23ffffff'/%3E%3C/svg%3E" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet Maps CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- Navigation Bar (Glassmorphic & Sticky) -->
+  <nav class="sticky top-0 z-40 w-full bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+      <!-- Logo & Brand -->
+      <a href="#home" id="nav-link-home" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+        <div class="relative w-8 h-8 sm:w-10 sm:h-10 group-hover:scale-105 transition-transform duration-300">
+          <svg class="w-8 h-8 sm:w-10 sm:h-10 drop-shadow-[0_0_12px_rgba(52,211,153,0.35)]" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mdBg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0f172a"/>
+                <stop offset="50%" stop-color="#064e3b" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#022c22"/>
+              </linearGradient>
+              <linearGradient id="mdBorder1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#34d399"/>
+                <stop offset="50%" stop-color="#22d3ee" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#059669"/>
+              </linearGradient>
+              <linearGradient id="mdGrad1" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#10b981"/>
+                <stop offset="50%" stop-color="#34d399"/>
+                <stop offset="100%" stop-color="#67e8f9"/>
+              </linearGradient>
+              <radialGradient id="mdGlow1" cx="72%" cy="28%" r="65%">
+                <stop offset="0%" stop-color="#34d399" stop-opacity="0.75"/>
+                <stop offset="45%" stop-color="#2dd4bf" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect x="1.5" y="1.5" width="41" height="41" rx="12" fill="url(#mdBg1)" stroke="url(#mdBorder1)" stroke-width="1.5"/>
+            <circle cx="22" cy="22" r="16" stroke="#34d399" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="2 3"/>
+            <circle cx="30" cy="14" r="11" fill="url(#mdGlow1)"/>
+            <path d="M 8 34 C 14 31, 16 24, 22 21 C 26 19, 28 16, 30 14" stroke="url(#mdGrad1)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 8 34 C 14 31, 16 24, 22 21 C 26 19, 28 16, 30 14" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1" stroke-linecap="round"/>
+            <circle cx="8" cy="34" r="2.5" fill="#34d399"/>
+            <circle cx="8" cy="34" r="1" fill="#ffffff"/>
+            <g transform="translate(30, 14)">
+              <path d="M 0 -9 C 0 -2.5, 2.5 0, 9 0 C 2.5 0, 0 2.5, 0 9 C 0 2.5, -2.5 0, -9 0 C -2.5 0, 0 -2.5, 0 -9 Z" fill="#ffffff"/>
+              <path d="M 0 -9 C 0 -2.5, 2.5 0, 9 0 C 2.5 0, 0 2.5, 0 9 C 0 2.5, -2.5 0, -9 0 C -2.5 0, 0 -2.5, 0 -9 Z" fill="url(#mdGrad1)" opacity="0.85"/>
+              <circle cx="0" cy="0" r="2" fill="#ffffff"/>
+              <circle cx="0" cy="0" r="1" fill="#047857"/>
+            </g>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-center">
+          <span class="font-display text-base sm:text-xl font-black tracking-tight text-white flex items-center leading-none">
+            Marga<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Darshi</span>
+          </span>
+          <span class="text-[9px] sm:text-[10px] font-medium tracking-normal text-slate-400 leading-tight mt-0.5 hidden xs:inline sm:inline">
+            The Companion That Shows The Way
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links (Laptop & iPad Landscape) -->
+      <div class="hidden md:flex items-center gap-6 text-xs sm:text-sm font-semibold text-slate-300">
+        <a href="#explore" id="nav-link-explore" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i data-lucide="globe-2" class="w-4 h-4 text-emerald-400"></i>
+          Explore Destinations
+        </a>
+        <a href="#itinerary" id="nav-link-itinerary" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+          AI Itinerary Planner
+        </a>
+      </div>
+
+      <!-- Right Action Island -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <!-- Multi-Currency Selector (Mobile & Desktop Enabled) -->
+        <div class="relative">
+          <select 
+            id="nav-currency-select" 
+            class="appearance-none bg-slate-900 border border-slate-800 text-[11px] sm:text-xs font-bold text-slate-200 rounded-xl pl-2 sm:pl-2.5 pr-6 sm:pr-7 py-1.5 focus:outline-none focus:border-emerald-500 cursor-pointer"
+            title="Choose Display Currency"
+          >
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="JPY">JPY (¥)</option>
+            <option value="INR">INR (₹)</option>
+            <option value="AUD">AUD (A$)</option>
+            <option value="CAD">CAD (C$)</option>
+          </select>
+          <i data-lucide="chevron-down" class="w-3 sm:w-3.5 h-3 sm:h-3.5 text-slate-400 absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+        </div>
+
+        <!-- Bucket List / Favorites Trigger (Desktop & iPad) -->
+        <button 
+          id="nav-btn-favorites" 
+          class="hidden md:flex relative p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-pink-400 border border-slate-800 transition-colors"
+          title="Open Bucket List"
+        >
+          <i data-lucide="heart" class="w-4 h-4"></i>
+          <span id="nav-favorites-count" class="hidden absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-pink-500 text-white text-[10px] font-black flex items-center justify-center shadow">
+            0
+          </span>
+        </button>
+
+        <!-- Origin Location Pill (Widescreen) -->
+        <button 
+          id="navbar-user-location" 
+          class="hidden xl:flex items-center px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-slate-700 transition-colors"
+          title="Your current origin location"
+        >
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-500 mr-1"></i>
+          <span>Detecting location...</span>
+        </button>
+
+        <!-- Location Settings Button -->
+        <button 
+          id="nav-btn-settings" 
+          class="p-1.5 sm:p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 transition-colors flex items-center gap-1.5"
+          title="Location Settings"
+        >
+          <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
+          <span class="text-xs font-semibold hidden md:inline">Location</span>
+        </button>
+
+        <!-- Mobile Quick Menu Toggle (Phone & Small Tablet) -->
+        <button 
+          id="nav-btn-mobile-menu" 
+          type="button"
+          class="md:hidden p-1.5 sm:p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-colors flex items-center justify-center min-w-[36px] min-h-[36px]"
+          title="Toggle Mobile Navigation Menu"
+          aria-label="Navigation Menu"
+        >
+          <i data-lucide="menu" id="mobile-menu-icon" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Slide-Down Quick Menu Panel -->
+    <div id="mobile-menu-drawer" class="hidden md:hidden border-t border-slate-800/80 bg-slate-950/98 backdrop-blur-2xl px-4 py-3 space-y-1.5 shadow-2xl transition-all">
+      <a href="#explore" class="mobile-menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:text-emerald-400 hover:bg-slate-900 transition-all">
+        <i data-lucide="globe-2" class="w-4 h-4 text-emerald-400"></i>
+        <span>Explore Global Destinations</span>
+      </a>
+      <a href="#itinerary" class="mobile-menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:text-emerald-400 hover:bg-slate-900 transition-all">
+        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+        <span>AI Day-by-Day Itinerary Planner</span>
+      </a>
+      <button id="mobile-menu-compass" type="button" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-amber-400 hover:bg-slate-900 transition-all text-left">
+        <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
+        <span>Mystery Trip Compass (Surprise Me)</span>
+      </button>
+      <button id="mobile-menu-location" type="button" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:text-white hover:bg-slate-900 transition-all text-left">
+        <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i>
+        <span>Set Origin City / Geolocation</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Location Awareness Permission Banner (04 Requirement) -->
+  <div id="location-awareness-banner" class="hidden relative z-30 bg-gradient-to-r from-emerald-950/90 via-slate-900/90 to-teal-950/90 backdrop-blur-md border-b border-emerald-500/20 px-4 py-2.5 text-xs text-slate-200">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 text-center sm:text-left">
+        <i data-lucide="crosshair" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+        <span>
+          <b>Enhance your journey:</b> Share your location to calculate real distances and see nearest global destinations.
+        </span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="banner-btn-allow-loc" class="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-colors shadow">
+          Allow Geolocation
+        </button>
+        <button id="banner-btn-manual-loc" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+          Search City
+        </button>
+        <button id="banner-btn-dismiss" class="p-1 text-slate-400 hover:text-white transition-colors" title="Dismiss">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN VIEW: LANDING EXPERIENCE (01 Requirement: Looping Video Hero + Explorer) -->
+  <main id="landing-view">
+    <!-- Hero Section with Looping Background Video -->
+    <section class="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden cartographic-overlay pt-8 pb-16">
+      <!-- Background Video Mount -->
+      <div id="hero-video-container" class="absolute inset-0 w-full h-full"></div>
+
+      <!-- Hero Foreground Copy & Interactive Callouts -->
+      <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <!-- Floating Pill Tag -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/85 backdrop-blur-xl border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6 shadow-2xl animate-pulse">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          MargaDarshi · The Companion That Shows The Way
+        </div>
+
+        <!-- Grand Headline -->
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-[1.08] mb-6 drop-shadow-2xl">
+          Journey Beyond <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+            The Extraordinary
+          </span>
+        </h1>
+
+        <!-- Subheading -->
+        <p class="text-base sm:text-xl text-slate-200 font-normal max-w-2xl mx-auto mb-9 leading-relaxed drop-shadow">
+          Explore world-class destinations, monitor live meteorological forecasts, uncover notable places with rich imagery, and let Gemini AI plan your day-by-day expedition.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto mb-10">
+          <button 
+            id="hero-btn-explore" 
+            class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-emerald-500/25 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+          >
+            <i data-lucide="compass" class="w-5 h-5 text-slate-950"></i>
+            <span>Explore Destinations</span>
+          </button>
+
+          <button 
+            id="hero-btn-spin-compass" 
+            class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-slate-900/90 to-amber-500/20 hover:from-amber-500/30 hover:to-amber-500/30 backdrop-blur-xl border border-amber-500/40 text-amber-300 font-bold text-sm sm:text-base shadow-xl shadow-amber-500/10 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
+            title="Spin the Compass to discover a surprise destination"
+          >
+            <i data-lucide="sparkles" class="w-5 h-5 text-amber-400 group-hover:rotate-180 transition-transform duration-700 ease-out"></i>
+            <span>Spin the Compass</span>
+          </button>
+
+          <button 
+            id="hero-btn-ai" 
+            class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-slate-900/80 hover:bg-slate-900 backdrop-blur-xl border border-slate-700/80 text-white font-bold text-sm sm:text-base shadow-xl transition-all hover:border-emerald-500/50 flex items-center justify-center gap-2"
+          >
+            <i data-lucide="wand-2" class="w-5 h-5 text-emerald-400"></i>
+            <span>Plan with Gemini AI</span>
+          </button>
+        </div>
+
+        <!-- Elevated Frosted Glass Stats Pods -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl w-full">
+          <div class="glass-stat-pod p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-slate-700/60 hover:border-emerald-400/50 transition-all duration-300 group hover:-translate-y-1 shadow-xl text-left">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                <i data-lucide="globe" class="w-4 h-4"></i>
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400/90 bg-emerald-500/10 px-2 py-0.5 rounded-full">Global</span>
+            </div>
+            <span class="block text-2xl sm:text-3xl font-black text-white group-hover:text-emerald-300 transition-colors">16</span>
+            <span class="text-xs text-slate-300 font-medium">Destinations</span>
+          </div>
+
+          <div class="glass-stat-pod p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-slate-700/60 hover:border-amber-400/50 transition-all duration-300 group hover:-translate-y-1 shadow-xl text-left">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="p-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:scale-110 transition-transform">
+                <i data-lucide="landmark" class="w-4 h-4"></i>
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400/90 bg-amber-500/10 px-2 py-0.5 rounded-full">Curated</span>
+            </div>
+            <span class="block text-2xl sm:text-3xl font-black text-amber-300 group-hover:text-amber-200 transition-colors">64+</span>
+            <span class="text-xs text-slate-300 font-medium">Famous Places</span>
+          </div>
+
+          <div class="glass-stat-pod p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-slate-700/60 hover:border-sky-400/50 transition-all duration-300 group hover:-translate-y-1 shadow-xl text-left">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="p-1.5 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 group-hover:scale-110 transition-transform">
+                <i data-lucide="cloud-sun" class="w-4 h-4"></i>
+              </span>
+              <span class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-sky-400/90 bg-sky-500/10 px-2 py-0.5 rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping"></span> Live
+              </span>
+            </div>
+            <span class="block text-2xl sm:text-3xl font-black text-sky-300 group-hover:text-sky-200 transition-colors">Dual-API</span>
+            <span class="text-xs text-slate-300 font-medium">Live Weather</span>
+          </div>
+
+          <div class="glass-stat-pod p-3.5 sm:p-4 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-slate-700/60 hover:border-purple-400/50 transition-all duration-300 group hover:-translate-y-1 shadow-xl text-left">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="p-1.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400/90 bg-purple-500/10 px-2 py-0.5 rounded-full">AI Core</span>
+            </div>
+            <span class="block text-2xl sm:text-3xl font-black text-purple-300 group-hover:text-purple-200 transition-colors">Gemini 2.5</span>
+            <span class="text-xs text-slate-300 font-medium">AI Concierge</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stylized Compass & Scroll Indicator Divider -->
+      <a href="#explore" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-400 transition-all group p-2" title="Scroll down to explorer">
+        <span class="text-[10px] font-mono tracking-widest uppercase text-slate-500 group-hover:text-emerald-400 transition-colors">Explore</span>
+        <div class="w-6 h-9 rounded-full border-2 border-slate-700/80 group-hover:border-emerald-400 flex items-start justify-center p-1 transition-colors">
+          <div class="w-1 h-2 rounded-full bg-emerald-400 animate-bounce"></div>
+        </div>
+      </a>
+    </section>
+
+    <!-- Destination Explorer Mount Point -->
+    <div id="explorer-container"></div>
+  </main>
+
+  <!-- DESTINATION DETAIL VIEW (02 & 03 Requirements) -->
+  <main id="destination-detail-container" class="hidden"></main>
+
+  <!-- ITINERARY PLANNER VIEW (08 Requirement) -->
+  <main id="itinerary-container" class="hidden"></main>
+
+  <!-- WanderAI Chatbot Widget (07 Requirement) -->
+  <div id="chat-widget-container"></div>
+
+  <!-- Location Settings Modal Mount Point -->
+  <div id="settings-modal-container"></div>
+
+  <!-- Bucket List / Favorites Drawer Mount Point -->
+  <div id="favorites-drawer-container"></div>
+
+  <!-- Photo Lightbox Mount Point -->
+  <div id="lightbox-container"></div>
+
+  <!-- Mystery Trip Compass Modal Mount Point (Feature 4) -->
+  <div id="mystery-compass-container"></div>
+
+  <!-- 3D Virtual Travel Postcard Modal Mount Point (Feature 7) -->
+  <div id="postcard-modal-container"></div>
+
+  <!-- Global Footer -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-12 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0">
+          <svg class="w-9 h-9 drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1.5" y="1.5" width="41" height="41" rx="12" fill="url(#mdBg1)" stroke="url(#mdBorder1)" stroke-width="1.5"/>
+            <circle cx="22" cy="22" r="16" stroke="#34d399" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="2 3"/>
+            <circle cx="30" cy="14" r="11" fill="url(#mdGlow1)"/>
+            <path d="M 8 34 C 14 31, 16 24, 22 21 C 26 19, 28 16, 30 14" stroke="url(#mdGrad1)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 8 34 C 14 31, 16 24, 22 21 C 26 19, 28 16, 30 14" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1" stroke-linecap="round"/>
+            <circle cx="8" cy="34" r="2.5" fill="#34d399"/>
+            <circle cx="8" cy="34" r="1" fill="#ffffff"/>
+            <g transform="translate(30, 14)">
+              <path d="M 0 -9 C 0 -2.5, 2.5 0, 9 0 C 2.5 0, 0 2.5, 0 9 C 0 2.5, -2.5 0, -9 0 C -2.5 0, 0 -2.5, 0 -9 Z" fill="#ffffff"/>
+              <path d="M 0 -9 C 0 -2.5, 2.5 0, 9 0 C 2.5 0, 0 2.5, 0 9 C 0 2.5, -2.5 0, -9 0 C -2.5 0, 0 -2.5, 0 -9 Z" fill="url(#mdGrad1)" opacity="0.85"/>
+              <circle cx="0" cy="0" r="2" fill="#ffffff"/>
+              <circle cx="0" cy="0" r="1" fill="#047857"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <span class="font-display font-black text-white text-base flex items-center">
+            Marga<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Darshi</span>
+          </span>
+          <p class="text-[11px] text-slate-400">The Companion That Shows The Way · Real Landmarks, Native Dialects & Live Navigation</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 text-[11px] text-slate-400">
+        <span>Weather: <b>Open-Meteo & OpenWeather</b></span>
+        <span>AI: <b>Google Gemini</b></span>
+        <span>Imagery: <b>Unsplash, Pexels & Wikipedia</b></span>
+        <span>Maps: <b>Leaflet & OpenStreetMap</b></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Bootstrap -->
+  <script type="module" src="./js/app.js"></script>
+
+  <!-- Mobile Bottom Navigation Dock (Native App Experience for Mobile & Compact Tablets) -->
+  <nav id="mobile-bottom-dock" class="block md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-2xl border-t border-slate-800/80 px-2 py-1 shadow-[0_-4px_25px_rgba(0,0,0,0.6)] transition-all" style="padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));">
+    <div class="flex items-center justify-around max-w-md mx-auto">
+      <!-- Home Tab -->
+      <a href="#home" id="mobile-nav-home" class="mobile-dock-btn flex flex-col items-center justify-center p-1.5 rounded-xl text-emerald-400 transition-colors min-w-[52px] min-h-[44px]">
+        <i data-lucide="home" class="w-5 h-5 mb-0.5"></i>
+        <span class="text-[10px] font-bold">Home</span>
+      </a>
+
+      <!-- Explore Tab -->
+      <a href="#explore" id="mobile-nav-explore" class="mobile-dock-btn flex flex-col items-center justify-center p-1.5 rounded-xl text-slate-400 hover:text-emerald-400 transition-colors min-w-[52px] min-h-[44px]">
+        <i data-lucide="compass" class="w-5 h-5 mb-0.5"></i>
+        <span class="text-[10px] font-bold">Explore</span>
+      </a>
+
+      <!-- Surprise Adventure Floating Button -->
+      <button type="button" id="mobile-nav-compass" class="flex flex-col items-center justify-center -mt-4 bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 p-2.5 rounded-full shadow-lg shadow-emerald-500/30 border-2 border-slate-950 active:scale-95 transition-transform min-w-[46px] min-h-[46px]" title="Surprise Adventure Compass">
+        <i data-lucide="sparkles" class="w-5 h-5"></i>
+        <span class="sr-only">Surprise Me</span>
+      </button>
+
+      <!-- AI Itinerary Planner Tab -->
+      <a href="#itinerary" id="mobile-nav-itinerary" class="mobile-dock-btn flex flex-col items-center justify-center p-1.5 rounded-xl text-slate-400 hover:text-emerald-400 transition-colors min-w-[52px] min-h-[44px]">
+        <i data-lucide="calendar-range" class="w-5 h-5 mb-0.5"></i>
+        <span class="text-[10px] font-bold">Planner</span>
+      </a>
+
+      <!-- Bucket List / Saved Tab -->
+      <button type="button" id="mobile-nav-favorites" class="mobile-dock-btn relative flex flex-col items-center justify-center p-1.5 rounded-xl text-slate-400 hover:text-pink-400 transition-colors min-w-[52px] min-h-[44px]">
+        <div class="relative">
+          <i data-lucide="heart" class="w-5 h-5 mb-0.5"></i>
+          <span id="mobile-favorites-count" class="hidden absolute -top-1 -right-2.5 w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-black flex items-center justify-center shadow">
+            0
+          </span>
+        </div>
+        <span class="text-[10px] font-bold">Saved</span>
+      </button>
+    </div>
+  </nav>
+
+</body>
+</html>
